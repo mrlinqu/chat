@@ -15,17 +15,24 @@ io.sockets.on('connection', function (socket) {
             username = msg.username;
             socket.join('main');
             logedin = true;
-            socket.broadcast.json.send({'event': 'joined', 'username': username, 'time': time});
+            socket.emit('join_ok', {'time': time});
+            socket.to('main').emit('joined', {'username': username, 'time': time});
+            //socket.broadcast.json.send({'event': 'joined', 'username': username, 'time': time});
+        } else {
+            socket.emit('join_fail', {'time': time});
         }
         console.log('join '+username);
     });
+
     socket.on('message', function (msg) {
+        var time = (new Date).toLocaleTimeString();
         if (logedin) {
-            var time = (new Date).toLocaleTimeString();
             //socket.json.send({'event': 'messageSent', 'name': ID, 'text': msg, 'time': time});
             //socket.broadcast.json.send({'event': 'message', 'username': username, 'text': msg, 'time': time})
             socket.to('main').emit('message', {'username': username, 'text': msg, 'time': time});
-            socket.json.send({'event': 'sent', 'time': time});
+            socket.emit('send_ok', {'time': time});
+        } else {
+            socket.emit('send_fail', {'time': time});
         }
     });
     socket.on('disconnect', function() {
