@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+	<header class="main-header">
+		<span class="logo">Chat <sup>dev &alpha;</sup></span>
+		<div class="navbar"></div>
+	</header>
+	<aside class="main-sidebar"></aside>
+	<div class="content-wrapper">
+		<section class="content" id="content"></section>
+	</div>
+	<footer class="main-footer">
+		<div class="row">
+			<div class="col-md-11">
+				<textarea class="form-control" rows="1" id="txtar_send"></textarea>
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default" id="btn_send"><span class="glyphicon glyphicon-play"></span></button>
+			</div>
+		</div>
+	</footer>
+
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="login_modal" data-backdrop="static">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	    <div class="modal-body">
+	      <form>
+			<input type="text" class="form-control" id="txt_username" placeholder="Username">
+			<input type="password" class="form-control" id="txt_passwd" placeholder="Password">
+			<button type="button" class="btn btn-primary btn-block" id="btn_login">Login</button>
+		  </form>
+		</div>
+	    </div>
+	  </div>
+	</div>
+
+
+    <script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="application/javascript">
+    	function fix() {
+    		var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
+    		var window_height = $(window).height();
+      		$(".content-wrapper, .right-side").css('min-height', window_height - neg);
+    	};
+    	
+
+    	fix();
+    	$(window, ".wrapper").resize(function () {
+			fix();
+		});
+
+		$('#login_modal').modal();
+    </script>
+
+    <script src="http://h.xffa.net:5580/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
