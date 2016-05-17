@@ -5,21 +5,21 @@ var userlist = [];
 
 io.sockets.on('connection', function (socket) {
     var time = (new Date).toJSON();
-    console.log('connected '+socket.request.connection.remoteAddress+':'+socket.request.connection.remotePort);
+    var userAddr = socket.request.connection.remoteAddress+':'+socket.request.connection.remotePort;
+    console.log('connected '+userAddr);
 
     var username,
         logedin = false;
 
     socket.on('join', function (msg) {
         var time = (new Date).toJSON();
-        if (msg.username !== undefined) {
+        if (msg.username !== undefined && msg.username != '') {
             username = htmlspecialchars(msg.username);
             socket.join('main');
             logedin = true;
             userlist.push(username);
             socket.emit('join_ok', {'username': username, 'userlist': userlist, 'time': time});
             socket.to('main').emit('joined', {'username': username, 'time': time});
-            //socket.broadcast.json.send({'event': 'joined', 'username': username, 'time': time});
         } else {
             socket.emit('join_fail', {'time': time});
         }
@@ -31,8 +31,6 @@ io.sockets.on('connection', function (socket) {
         console.log(username+' send: '+msg);
         if (logedin) {
             msg = htmlspecialchars(msg);
-            //socket.json.send({'event': 'messageSent', 'name': ID, 'text': msg, 'time': time});
-            //socket.broadcast.json.send({'event': 'message', 'username': username, 'text': msg, 'time': time})
             socket.to('main').emit('message', {'username': username, 'text': msg, 'time': time});
             socket.emit('send_ok', {'text': msg, 'time': time});
         } else {
@@ -47,7 +45,6 @@ io.sockets.on('connection', function (socket) {
             });
             socket.to('main').emit('leave', {'username': username, 'time': time});
         }
-        console.log('disconnect '+username);
-        //io.sockets.json.send({'event': 'leave', 'username': username, 'time': time});
+        console.log('disconnect '+userAddr+' '+username);
     });
 });

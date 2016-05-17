@@ -20,10 +20,13 @@ soc.on('connect', function(){
 		$('#login_modal').modal('show');
 	});
 	soc.on('send_ok', function(data){
-		$('#txtar_send').attr('disabled',false);
-		$('#btn_send').attr('disabled',false);
-		$('#btn_send').html('<span class="glyphicon glyphicon-play"></span>');
-		addMessage({type:'out', date:data.time, username:'', text:data.text});
+		$('#txtar_send')
+			.attr('disabled',false)
+			.val('');
+		$('#btn_send')
+			.attr('disabled',false)
+			.html('<span class="glyphicon glyphicon-play"></span>');
+		addMessage({type:'out', date:data.time, text:data.text});
 	});
 	soc.on('send_fail', function(data){
 		$('#txtar_send').attr('disabled',false);
@@ -35,11 +38,11 @@ soc.on('connect', function(){
 	soc.on('joined', function(data){
 		var li = '<li id="userlist_'+data.username+'">'+data.username+'</li>';
 		$('#sidebar-menu').append(li);
-		addMessage({type:'sys', date:data.time, username:'', text:'User '+data.username+' joined!'});
+		addMessage({type:'sys', date:data.time, text:'User '+data.username+' joined!'});
 	});
 	soc.on('leave', function(data){
 		$('#userlist_'+data.username).remove();
-		addMessage({type:'sys', date:data.time, username:'', text:'User '+data.username+' leave.'});
+		addMessage({type:'sys', date:data.time, text:'User '+data.username+' leave.'});
 	});
 	soc.on('message', function(data){
 		addMessage({type:'in', date:data.time, username:data.username, text:data.text});
@@ -81,5 +84,13 @@ function addMessage(data) {
 		.scrollTop(msg_board[0].scrollHeight);
 }
 
+function txtarSend_onKeypress(e) {
+	if (e.keyCode == 13 && !e.shiftKey) {
+		on_btnSend();
+		return false;
+	}
+}
+
 $('#btn_login').on('click', on_bntLogin);
 $('#btn_send').on('click', on_btnSend);
+$('#txtar_send').keydown(txtarSend_onKeypress);

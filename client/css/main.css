@@ -36,7 +36,7 @@
 }
 .content-wrapper, .right-side {
     min-height: 100%;
-    background-color: #ecf0f5;
+    background-color: hsl(120, 29%, 94%);/*#ecf0f5*/
     z-index: 0;
 }
 .main-footer {
@@ -54,7 +54,7 @@
     z-index: 20;
 }
 .logo {
-    background-color: #367fa9;
+    background-color: hsl(120,30%,44%);/*#367fa9*/
     color: #fff;
     border-bottom: 0 solid transparent;
 }
@@ -75,7 +75,7 @@
     overflow: hidden;
 }
 .main-header .navbar {
-    background-color: #3c8dbc;
+    background-color: hsl(120,30%,51%);/*#3c8dbc*/
 }
 .main-header>.navbar {
     -webkit-transition: margin-left .3s ease-in-out;
