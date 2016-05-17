@@ -5,8 +5,6 @@
 }
 .main-sidebar {
 	background-color: #222d32;
-	
-
 	position: absolute;
     top: 0;
     left: 0;
@@ -14,6 +12,27 @@
     min-height: 100%;
     width: 230px;
     z-index: 10;
+}
+.sidebar-menu {
+    white-space: nowrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.sidebar {
+    color: #b8c7ce;
+}
+.sidebar-menu li.header {
+    padding: 10px 25px 10px 15px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #4b646f;
+    background: #1a2226;
+}
+.sidebar-menu li {
+    overflow: hidden;
+    text-overflow: clip;
+    padding: 2px 5px 3px 15px;
 }
 .content-wrapper, .right-side {
     min-height: 100%;
@@ -74,4 +93,45 @@
 }
 .modal-dialog .modal-body {
     padding: 40px 20px 30px;
+}
+.content {
+    padding: 15px;
+}
+
+.msg span {
+    padding: 0 3px;
+}
+.msg .time {
+    font-size: 10px;
+}
+.msg .username {
+    font-size: 12px;
+    font-weight: bold;
+}
+.msg .text {
+    /*display: block;*/
+    padding-left: 10px;
+}
+.msg.sys .time {
+    color: #a3a8b1;
+}
+.msg.sys .username {
+    display: none;
+}
+.msg.sys .text {
+    /*display: inline;*/
+    font-size: 12px;
+    color: #a3a8b1; /*#d2d6de*/
+}
+.msg .msg-icon {
+    font-size: 10px;
+}
+.msg.in .msg-icon.glyphicon:before {
+    content: "\e080";
+}
+.msg.out .msg-icon.glyphicon:before {
+    content: "\e079";
+}
+.msg.sys .msg-icon.glyphicon:before {
+    content: "\e019";
 }

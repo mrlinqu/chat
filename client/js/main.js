@@ -5,6 +5,14 @@ soc.on('connect', function(){
 		$('#loginForm_fieldset').attr('disabled',false);
 		$('#btn_login').html('Login');
 		$('#login_modal').modal('hide');
+
+		$('#sidebar-menu').append('<li class="header"><i id="status_icon"></i>'+data.username+'</li>');
+		for (var i=0; i<data.userlist.length; i++) {
+			var username = data.userlist[i],
+				li_id = 'userlist_'+username,
+				li = '<li id="'+li_id+'">'+username+'</li>';
+				$('#sidebar-menu').append(li);
+		}
 	});
 	soc.on('join_fail', function(data){
 		$('#loginForm_fieldset').attr('disabled',false);
@@ -15,6 +23,7 @@ soc.on('connect', function(){
 		$('#txtar_send').attr('disabled',false);
 		$('#btn_send').attr('disabled',false);
 		$('#btn_send').html('<span class="glyphicon glyphicon-play"></span>');
+		addMessage({type:'out', date:data.time, username:'', text:data.text});
 	});
 	soc.on('send_fail', function(data){
 		$('#txtar_send').attr('disabled',false);
@@ -24,15 +33,16 @@ soc.on('connect', function(){
 
 
 	soc.on('joined', function(data){
-		console.log('joined', data);
+		var li = '<li id="userlist_'+data.username+'">'+data.username+'</li>';
+		$('#sidebar-menu').append(li);
+		addMessage({type:'sys', date:data.time, username:'', text:'User '+data.username+' joined!'});
 	});
 	soc.on('leave', function(data){
-		console.log('leave', data);
+		$('#userlist_'+data.username).remove();
+		addMessage({type:'sys', date:data.time, username:'', text:'User '+data.username+' leave.'});
 	});
 	soc.on('message', function(data){
-		var dt = new Date(data.time);
-		addMessage({type:'in', date:dt, user:data.username, text:data.text});
-		//console.log('message', data);
+		addMessage({type:'in', date:data.time, username:data.username, text:data.text});
 	});
 
 });
@@ -56,13 +66,15 @@ function on_btnSend() {
 function addMessage(data) {
 	var msgType = 'msg '+data.type,
 		dt = data.date,
+		datespan = (data.date != undefined) ? '<span class="time">'+(new Date(data.date)).toLocaleTimeString()+'</span>' : '',
+		userspan = (data.username != undefined && data.username != '') ? '<span class="username">'+data.username+':</span>' : '',
 		msg_board = $('#content'),
 		msg = '<div class="'+msgType+'">'
-			+'<span class="icon"></span>'
-			+'<span class="time">'+dt+'</span>'
-			+'<span class="username">'+data.username+'</span>'
-			+'<span class="text">'+data.text+'</span>'
-			+'</div>';
+			+ '<i class="glyphicon msg-icon"></i>'
+			+ datespan
+			+ userspan
+			+ '<span class="text">'+data.text+'</span>'
+			+ '</div>';
 
 	msg_board
 		.append(msg)
