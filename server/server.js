@@ -3,14 +3,14 @@ var io = require('socket.io')(5580);
 //io.set('log level', 1); // Отключаем вывод полного лога - пригодится в production'е
 
 io.sockets.on('connection', function (socket) {
-    var time = (new Date).toLocaleTimeString();
+    var time = (new Date).toJSON();
     console.log('connected '+socket.request.connection.remoteAddress+':'+socket.request.connection.remotePort);
 
     var username,
         logedin = false;
 
     socket.on('join', function (msg) {
-        var time = (new Date).toLocaleTimeString();
+        var time = (new Date).toJSON();
         if (msg.username !== undefined) {
             username = msg.username;
             socket.join('main');
@@ -24,8 +24,9 @@ io.sockets.on('connection', function (socket) {
         console.log('join '+username);
     });
 
-    socket.on('message', function (msg) {
-        var time = (new Date).toLocaleTimeString();
+    socket.on('send', function (msg) {
+        var time = (new Date).toJSON();
+        console.log(username+' send: '+msg);
         if (logedin) {
             //socket.json.send({'event': 'messageSent', 'name': ID, 'text': msg, 'time': time});
             //socket.broadcast.json.send({'event': 'message', 'username': username, 'text': msg, 'time': time})
@@ -37,7 +38,7 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('disconnect', function() {
         if (logedin) {
-            var time = (new Date).toLocaleTimeString();
+            var time = (new Date).toJSON();
             socket.to('main').emit('leave', {'username': username, 'time': time});
         }
         console.log('disconnect '+username);
