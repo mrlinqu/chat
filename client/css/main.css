@@ -126,6 +126,9 @@
 .msg .msg-icon {
     font-size: 10px;
 }
+.msg.sys .msg-icon {
+    color: #a3a8b1;
+}
 .msg.in .msg-icon.glyphicon:before {
     content: "\e080";
 }
