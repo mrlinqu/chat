@@ -38,6 +38,7 @@
     min-height: 100%;
     background-color: hsl(120, 29%, 94%);/*#ecf0f5*/
     z-index: 0;
+    overflow-y: scroll;
 }
 .main-footer {
     background: #fff;

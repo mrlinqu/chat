@@ -13,8 +13,15 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('join', function (msg) {
         var time = (new Date).toJSON();
-        if (msg.username !== undefined && msg.username != '') {
-            username = htmlspecialchars(msg.username);
+        if (msg.username !== undefined ) {
+            username = htmlspecialchars(msg.username.trim());
+            if (username == '') {
+                socket.emit('join_fail', {'time': time});
+            }
+            if (userlist.indexOf(msg.username) != -1) {
+                socket.emit('join_fail', {'message':'User already joined!', 'time': time});
+            }
+            
             socket.join('main');
             logedin = true;
             userlist.push(username);
@@ -28,15 +35,19 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('send', function (msg) {
         var time = (new Date).toJSON();
-        console.log(username+' send: '+msg);
-        if (logedin) {
-            msg = htmlspecialchars(msg);
+        if (logedin && msg != undefined) {
+            msg = htmlspecialchars(msg.trim());
+            if (msg == '') {
+                socket.emit('send_fail', {'time': time});
+            }
+            console.log(username+' send: '+msg);
             socket.to('main').emit('message', {'username': username, 'text': msg, 'time': time});
             socket.emit('send_ok', {'text': msg, 'time': time});
         } else {
             socket.emit('send_fail', {'time': time});
         }
     });
+
     socket.on('disconnect', function() {
         if (logedin) {
             var time = (new Date).toJSON();
