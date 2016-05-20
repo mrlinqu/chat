@@ -17,9 +17,11 @@ io.sockets.on('connection', function (socket) {
             username = htmlspecialchars(msg.username.trim());
             if (username == '') {
                 socket.emit('join_fail', {'time': time});
+                return;
             }
-            if (userlist.indexOf(msg.username) != -1) {
+            if (userlist.indexOf(username) != -1) {
                 socket.emit('join_fail', {'message':'User already joined!', 'time': time});
+                return;
             }
             
             socket.join('main');
@@ -39,6 +41,7 @@ io.sockets.on('connection', function (socket) {
             msg = htmlspecialchars(msg.trim());
             if (msg == '') {
                 socket.emit('send_fail', {'time': time});
+                return;
             }
             console.log(username+' send: '+msg);
             socket.to('main').emit('message', {'username': username, 'text': msg, 'time': time});

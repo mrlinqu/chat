@@ -12,7 +12,7 @@
 
     function on_disconnect(){
     	$('#login_modal').modal('hide');
-		$('#waitConnect_modal .modal-body').html("Connecting lost!\nReconnect...");
+		$('#waitConnect_modal .modal-body').html("Connecting lost!<br>Reconnect...");
     	$('#waitConnect_modal').modal('show');
     };
 
@@ -106,17 +106,19 @@
 			dt = data.date,
 			datespan = (data.date != undefined) ? '<span class="time">'+(new Date(data.date)).toLocaleTimeString()+'</span>' : '',
 			userspan = (data.username != undefined && data.username != '') ? '<span class="username">'+data.username+':</span>' : '',
-			msg_board = $('#content'),
 			msg = '<div class="'+msgType+'">'
 				+ '<i class="glyphicon msg-icon"></i>'
 				+ datespan
 				+ userspan
 				+ '<span class="text">'+data.text+'</span>'
-				+ '</div>';
+				+ '</div>',
+			wrapper = $('#content-wrapper'),
+			fullScroll = wrapper[0].scrollHeight - wrapper[0].scrollTop == wrapper[0].clientHeight,
 
-		msg_board
-			.append(msg)
-			.scrollTop(msg_board[0].scrollHeight);
+		$('#content').append(msg);
+		if (fullScroll) {
+			wrapper.scrollTop(wrapper[0].scrollHeight - wrapper[0].scrollTop);
+		}
 	};
 
 	function onWrapperResize() {
@@ -151,4 +153,4 @@
 
     //для простановки размеров после запуска приложения
     onWrapperResize();
-});
+})();
