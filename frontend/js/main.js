@@ -112,7 +112,7 @@
 				+ userspan
 				+ '<span class="text">'+data.text+'</span>'
 				+ '</div>',
-			wrapper = $('#content-wrapper'),
+			wrapper = $('#content_wrapper'),
 			fullScroll = wrapper[0].scrollHeight - wrapper[0].scrollTop == wrapper[0].clientHeight;
 
 		$('#content').append(msg);
